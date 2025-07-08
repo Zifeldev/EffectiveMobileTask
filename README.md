@@ -53,19 +53,19 @@ curl "http://localhost:8080/people?gender=male&min_age=20&page=1&limit=5"
 http://localhost:8080/swagger/index.html
 (Если вы конечно не поменяли порт)
 
-### Структура
-.
-├── cmd/                    # main.go
-├── internal/
-│   ├── handler/            # HTTP хендлеры (Gin)
-│   ├── model/              # структура Person
-│   ├── repository/         # Работа с БД (Squirrel + pgx)
-│   ├── service/            # Обогащение через API
-│   ├── config/             # Загрузка конфигурации
-|   ├── db/                 # Инициализация db
-│   └── migrations/         # Goose SQL миграции
-└── go.mod
+### Структура проекта
 
+| Путь                         | Описание                                               |
+|-----------------------------|--------------------------------------------------------|
+| `cmd/main.go`               | Точка входа, запуск сервера                            |
+| `internal/handler/`         | HTTP-хендлеры (Gin)                                    |
+| `internal/model/`           | Структуры, включая `Person`, `CreatePersonRequest` и т.п. |
+| `internal/repository/`      | Работа с базой данных (Squirrel + pgx)                 |
+| `internal/service/`         | Логика обогащения (внешние API)                        |
+| `internal/config/`          | Загрузка конфигурации из `.env`                        |
+| `internal/db/`              | Подключение к БД                                       |
+| `internal/migrations/`      | Goose миграции SQL                                     |
+| `go.mod`, `go.sum`          | Зависимости проекта                                    |
 
 
 
