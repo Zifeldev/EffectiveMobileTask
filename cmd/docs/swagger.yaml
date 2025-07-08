@@ -1,0 +1,145 @@
+basePath: /
+definitions:
+  model.CreatePersonRequest:
+    properties:
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    required:
+    - name
+    - surname
+    type: object
+  model.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  model.Gender:
+    enum:
+    - male
+    - female
+    - unknown
+    type: string
+    x-enum-varnames:
+    - GenderMale
+    - GenderFemale
+    - GenderUnknown
+  model.Person:
+    properties:
+      age:
+        type: integer
+      country_id:
+        type: string
+      created_at:
+        type: string
+      gender:
+        $ref: '#/definitions/model.Gender'
+      id:
+        type: integer
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API with enrich
+  title: People API
+  version: "1.0"
+paths:
+  /people:
+    get:
+      consumes:
+      - application/json
+      description: With filter and pagination
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: Surname
+        in: query
+        name: surname
+        type: string
+      - description: Gender
+        enum:
+        - male
+        - female
+        - unknown
+        in: query
+        name: gender
+        type: string
+      - description: country ID
+        in: query
+        name: country_id
+        type: string
+      - description: Min age
+        in: query
+        name: min_age
+        type: integer
+      - description: Max age
+        in: query
+        name: max_age
+        type: integer
+      - default: 1
+        description: page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Person'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Get list of people
+      tags:
+      - people
+    post:
+      consumes:
+      - application/json
+      description: Save and enrich
+      parameters:
+      - description: User data
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreatePersonRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Person'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: Create new person
+      tags:
+      - people
+swagger: "2.0"
